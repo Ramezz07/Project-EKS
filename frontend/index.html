@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <meta charset="UTF-8">
+  <title>Real-Time E-Commerce</title>
+</head>
+<body>
+  <h1>🛒 Real-Time Store</h1>
+
+  <button onclick="order('Laptop')">Order Laptop</button>
+  <button onclick="order('Mobile')">Order Mobile</button>
+
+  <h2>📢 Live Orders</h2>
+  <ul id="orders"></ul>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on("new-order", product => {
+      const li = document.createElement("li");
+      li.innerText = `New order placed: ${product}`;
+      document.getElementById("orders").appendChild(li);
+    });
+
+    function order(product) {
+      fetch(`/order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product })
+      });
+    }
+  </script>
+</body>
+</html>
+
